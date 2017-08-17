@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Activity,AMS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
+<meta name="keywords" content="Activity,AMS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Launcher的启动">
+<meta property="og:url" content="http://xietianduo.github.io/2017/07/25/Activity启动/index.html">
+<meta property="og:site_name" content="谢天铎">
+<meta property="og:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-17T09:50:28.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Launcher的启动">
+<meta name="twitter:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: 'TianDuo'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xietianduo.github.io/2017/07/25/Activity启动/"/>
+
+
+
+
+
+  <title>Launcher的启动 | 谢天铎</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ed4c24291ef0929abc893cfd9d1ce21a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">谢天铎</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just Have A Try</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            博客首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            文章分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有文章
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://xietianduo.github.io/2017/07/25/Activity启动/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢天铎">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/AndroidO.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="谢天铎">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Launcher的启动</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T17:13:38+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AMS剖析/" itemprop="url" rel="index">
+                    <span itemprop="name">AMS剖析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>尊重原创，禁止任何形式的转载与抄袭</strong></p>
+<p><em>本文选用API25分析</em></p>
+<table>
+<thead>
+<tr>
+<th>关键词</th>
+<th>简写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ActivityManagerService</td>
+<td>AMS</td>
+</tr>
+<tr>
+<td>ActivityStackSupervisor</td>
+<td>ASS</td>
+</tr>
+<tr>
+<td>PackageManagerService</td>
+<td>PMS</td>
+</tr>
+<tr>
+<td>&lt;==</td>
+<td>表示将进入方法内分析</td>
+</tr>
+</tbody>
+</table>
+<h1 id="DirectBoot之FallbackHome"><a href="#DirectBoot之FallbackHome" class="headerlink" title="DirectBoot之FallbackHome"></a>DirectBoot之FallbackHome</h1><h2 id="DirectBoot"><a href="#DirectBoot" class="headerlink" title="DirectBoot"></a>DirectBoot</h2><p>API24开始就加了DirectBoot的特性，开机到解锁前的时间，系统会进入DirectBoot模式。不过正常情况下没有开启，需要在开发选项或者使用adb开启。<br>开启了DirectBoot之后有如下变化：</p>
+<ol>
+<li><strong>存储变化：</strong>系统会为应用提供两个不同的存储空间，一个是凭证加密空间，需要解锁后才能使用，另外一个是设备加密空间，不需要解锁，在启动后就能直接使用。</li>
+<li><strong>应用启动限制：</strong>只有标记了android:directBootAware=”true” 的组件才能在DirectBoot模式下启动，其他组件都无法启动。</li>
+</ol>
+<h2 id="FallbackHome"><a href="#FallbackHome" class="headerlink" title="FallbackHome"></a>FallbackHome</h2><p>由于系统应用Launcher本身并不支持DirectBoot，但是Android N前Launcher是在system_process启动时刻就立刻启动，这不符合上面提到的DirectBoot应用启动限制，所以，所以就在AndroidN及以上的系统应用Setttings中添加一个简易的Launcher应用叫FallbackHome，FallbackHome支持DirectBoot，不管是否开启了DirectBoot,AMS首先会在系统启动时刻启动FallbackHome，FallbackHome会自动判断如果不是处在DirectBoot模式下，是则会自动销毁自己，AMS会重启Home栈，真正的Launcher才启动。所以AndroidN后，开机会先启动FallbackHome，再启动真正的Launcher。<br><a id="more"></a></p>
+<h1 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h1><table>
+<thead>
+<tr>
+<th>关键类</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ActivityManagerService</td>
+<td>主要用于管理四大组件以及adb相关的工具</td>
+</tr>
+<tr>
+<td>ActivityRecord</td>
+<td>AMS不会直接使用Activity，而是用ActivityRecord来记录Activity</td>
+</tr>
+<tr>
+<td>TaskRecord</td>
+<td>ActivityRecord的栈</td>
+</tr>
+<tr>
+<td>ActivityStack</td>
+<td>TaskRecord的栈，主要有HomeStack跟AppStack，HomeStack包含Launcher跟RecentApp两个TaskRecord，AppStack包含普通Activity的TaskRecord</td>
+</tr>
+<tr>
+<td>ActivityStackSupervisor</td>
+<td>用于管理ActivityStack</td>
+</tr>
+<tr>
+<td>ActivityStarter</td>
+<td>将Intent转化成一个ActivityRecord并且加入到对应的ActivityStack，TaskRecord</td>
+</tr>
+</tbody>
+</table>
+<h1 id="FallbackHome之启动"><a href="#FallbackHome之启动" class="headerlink" title="FallbackHome之启动"></a>FallbackHome之启动</h1><h1 id="AMS-systemReady"><a href="#AMS-systemReady" class="headerlink" title="AMS.systemReady"></a>AMS.systemReady</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//AMS初始化的最后会执行systemReady方法</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">systemReady</span><span class="params">(<span class="keyword">final</span> Runnable goingCallback)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">//启动HomeActivity即是Launcher</span></div><div class="line">    <span class="comment">//这个Launcher就是简易的FallbackHome,默认用户UserId=0</span></div><div class="line">    startHomeActivityLocked(currentUserId, <span class="string">"systemReady"</span>);<span class="comment">//&lt;==</span></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="AMS-startHomeActivityLocked"><a href="#AMS-startHomeActivityLocked" class="headerlink" title="AMS.startHomeActivityLocked"></a>AMS.startHomeActivityLocked</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">startHomeActivityLocked</span><span class="params">(<span class="keyword">int</span> userId, String reason)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mFactoryTest == FactoryTest.FACTORY_TEST_LOW_LEVEL</div><div class="line">            &amp;&amp; mTopAction == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//构建启动Launcher的Intent</span></div><div class="line">    Intent intent = getHomeIntent();</div><div class="line">    <span class="comment">//用PMS来查找对应intent的ActivityInfo</span></div><div class="line">    <span class="comment">//ActivityInfo代表着Manifest.xml中Activity的信息</span></div><div class="line">    <span class="comment">//返回aInfo即是FallbackHome</span></div><div class="line">    ActivityInfo aInfo = resolveActivityInfo(intent, STOCK_PM_FLAGS, userId);</div><div class="line">    <span class="keyword">if</span> (aInfo != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">//intent从隐式改成显式，启动必然是aInfo对应的Activity</span></div><div class="line">        intent.setComponent(<span class="keyword">new</span> ComponentName(aInfo.applicationInfo.packageName, aInfo.name));</div><div class="line">        aInfo = <span class="keyword">new</span> ActivityInfo(aInfo);</div><div class="line">        aInfo.applicationInfo = getAppInfoForUser(aInfo.applicationInfo, userId);</div><div class="line">        <span class="comment">//查找现有的Processrecord中是否有FallbackHome的进程</span></div><div class="line">        <span class="comment">//很明显，系统才刚开机，没有对应的进程，所以app==null</span></div><div class="line">        ProcessRecord app = getProcessRecordLocked(aInfo.processName,</div><div class="line">                aInfo.applicationInfo.uid, <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">if</span> (app == <span class="keyword">null</span> || app.instrumentationClass == <span class="keyword">null</span>) &#123;</div><div class="line">            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);</div><div class="line">            <span class="comment">//利用本方法中构建的Intent，ActiityInfo来启动HomeActivity</span></div><div class="line">            mActivityStarter.startHomeActivityLocked(intent, aInfo, reason);<span class="comment">//&lt;==</span></div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        Slog.wtf(TAG, <span class="string">"No home screen found for "</span> + intent, <span class="keyword">new</span> Throwable());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="ActivityStarter-startHomeActivityLocked"><a href="#ActivityStarter-startHomeActivityLocked" class="headerlink" title="ActivityStarter.startHomeActivityLocked"></a>ActivityStarter.startHomeActivityLocked</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">startHomeActivityLocked</span><span class="params">(Intent intent, ActivityInfo aInfo, String reason)</span> </span>&#123;</div><div class="line">    <span class="comment">//将HomeStack中Launcher的TaskRecord移到顶端显示</span></div><div class="line">    <span class="comment">//由于刚开机，HomeStack中并没有任何TaskRecord存在，所以没有任何效果这句</span></div><div class="line">    mSupervisor.moveHomeStackTaskToTop(HOME_ACTIVITY_TYPE, reason);</div><div class="line">    <span class="comment">//传入参数只有intent，aInfo，其他都是null，0，false</span></div><div class="line">    startActivityLocked(<span class="keyword">null</span> , intent, <span class="keyword">null</span> ,</div><div class="line">            <span class="keyword">null</span> , aInfo, <span class="keyword">null</span> , <span class="keyword">null</span> ,</div><div class="line">            <span class="keyword">null</span> , <span class="keyword">null</span> , <span class="keyword">null</span> ,</div><div class="line">            <span class="number">0</span> , <span class="number">0</span> , <span class="number">0</span> , <span class="keyword">null</span> ,</div><div class="line">            <span class="number">0</span> , <span class="number">0</span> , <span class="number">0</span> , <span class="keyword">null</span> ,</div><div class="line">            <span class="keyword">false</span> , <span class="keyword">false</span> , <span class="keyword">null</span> ,</div><div class="line">            <span class="keyword">null</span> , <span class="keyword">null</span> ); <span class="comment">//&lt;==</span></div><div class="line">    <span class="comment">// inResumeTopActivity是为了防止ActivityStack递归调用resumeTopActivityUncheckedLocked</span></div><div class="line">    <span class="comment">// 由于此次startHomeActivityLocked的调用是由系统启动时AMS的systemReady调过来的，不是从ActivityStack调过来的，所以不存在递归调用的问题</span></div><div class="line">    <span class="comment">// 所以，inResumeActivity==false,不走以下流程</span></div><div class="line">    <span class="keyword">if</span> (mSupervisor.inResumeTopActivity) &#123;</div><div class="line">        mSupervisor.scheduleResumeTopActivities();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="ActivityStarter-startActivityLocked"><a href="#ActivityStarter-startActivityLocked" class="headerlink" title="ActivityStarter.startActivityLocked"></a>ActivityStarter.startActivityLocked</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//传入参数只有intent，aInfo，其他都是null，0，false</span></div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">startActivityLocked</span><span class="params">(IApplicationThread caller, Intent intent, Intent ephemeralIntent,</span></span></div><div class="line">        String resolvedType, ActivityInfo aInfo, ResolveInfo rInfo,</div><div class="line">        IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor,</div><div class="line">        IBinder resultTo, String resultWho, <span class="keyword">int</span> requestCode, <span class="keyword">int</span> callingPid, <span class="keyword">int</span> callingUid,</div><div class="line">        String callingPackage, <span class="keyword">int</span> realCallingPid, <span class="keyword">int</span> realCallingUid, <span class="keyword">int</span> startFlags,</div><div class="line">        ActivityOptions options, <span class="keyword">boolean</span> ignoreTargetSecurity, <span class="keyword">boolean</span> componentSpecified,</div><div class="line">        ActivityRecord[] outActivity, ActivityStackSupervisor.ActivityContainer container,</div><div class="line">        TaskRecord inTask) &#123;</div><div class="line">    <span class="keyword">int</span> err = ActivityManager.START_SUCCESS;</div><div class="line"></div><div class="line">    ProcessRecord callerApp = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">//传参caller==null，不走这</span></div><div class="line">    <span class="keyword">if</span> (caller != <span class="keyword">null</span>) &#123;</div><div class="line">        callerApp = mService.getRecordForAppLocked(caller);</div><div class="line">        <span class="keyword">if</span> (callerApp != <span class="keyword">null</span>) &#123;</div><div class="line">            callingPid = callerApp.pid;</div><div class="line">            callingUid = callerApp.info.uid;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            Slog.w(TAG, <span class="string">"Unable to find app for caller "</span> + caller</div><div class="line">                    + <span class="string">" (pid="</span> + callingPid + <span class="string">") when starting: "</span></div><div class="line">                    + intent.toString());</div><div class="line">            err = ActivityManager.START_PERMISSION_DENIED;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//userId与uid是两种完全不一样的概念</span></div><div class="line">    <span class="comment">//uid是linux中的uid概念，但被android用在了应用沙盒机制，也就是每个应用一般都有一个不同的uid</span></div><div class="line">    <span class="comment">//userId则是android自己创造的，通过uid分段来区分userId，userId=uid/100000(十万)</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> userId = aInfo != <span class="keyword">null</span> ? UserHandle.getUserId(aInfo.applicationInfo.uid) : <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">//普通的打log，没意义</span></div><div class="line">    <span class="keyword">if</span> (err == ActivityManager.START_SUCCESS) &#123;</div><div class="line">        Slog.i(TAG, <span class="string">"START u"</span> + userId + <span class="string">" &#123;"</span> + intent.toShortString(<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">false</span>)</div><div class="line">                + <span class="string">"&#125; from uid "</span> + callingUid</div><div class="line">                + <span class="string">" on display "</span> + (container == <span class="keyword">null</span> ? (mSupervisor.mFocusedStack == <span class="keyword">null</span> ?</div><div class="line">                Display.DEFAULT_DISPLAY : mSupervisor.mFocusedStack.mDisplayId) :</div><div class="line">                (container.mActivityDisplay == <span class="keyword">null</span> ? Display.DEFAULT_DISPLAY :</div><div class="line">                        container.mActivityDisplay.mDisplayId)));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 下面这段代码主要跟startActvityForResult并且Intent带FLAG_ACTIVITY_FORWARD_RESULT相关</span></div><div class="line">    <span class="comment">// 有兴趣可以自己结合FLAG_ACTIVITY_FORWARD_RESULT看</span></div><div class="line">    ActivityRecord sourceRecord = <span class="keyword">null</span>;</div><div class="line">    ActivityRecord resultRecord = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 传入参数resultTo==null，所以sourceRecord，resultRecord都为null</span></div><div class="line">    <span class="keyword">if</span> (resultTo != <span class="keyword">null</span>) &#123;</div><div class="line">        sourceRecord = mSupervisor.isInAnyStackLocked(resultTo);</div><div class="line">        <span class="keyword">if</span> (DEBUG_RESULTS) Slog.v(TAG_RESULTS,</div><div class="line">                <span class="string">"Will send result to "</span> + resultTo + <span class="string">" "</span> + sourceRecord);</div><div class="line">        <span class="keyword">if</span> (sourceRecord != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (requestCode &gt;= <span class="number">0</span> &amp;&amp; !sourceRecord.finishing) &#123;</div><div class="line">                resultRecord = sourceRecord;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> launchFlags = intent.getFlags();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> ((launchFlags &amp; Intent.FLAG_ACTIVITY_FORWARD_RESULT) != <span class="number">0</span> &amp;&amp; sourceRecord != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (requestCode &gt;= <span class="number">0</span>) &#123;</div><div class="line">            ActivityOptions.abort(options);</div><div class="line">            <span class="keyword">return</span> ActivityManager.START_FORWARD_AND_REQUEST_CONFLICT;</div><div class="line">        &#125;</div><div class="line">        resultRecord = sourceRecord.resultTo;</div><div class="line">        <span class="keyword">if</span> (resultRecord != <span class="keyword">null</span> &amp;&amp; !resultRecord.isInStackLocked()) &#123;</div><div class="line">            resultRecord = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        resultWho = sourceRecord.resultWho;</div><div class="line">        requestCode = sourceRecord.requestCode;</div><div class="line">        sourceRecord.resultTo = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (resultRecord != <span class="keyword">null</span>) &#123;</div><div class="line">            resultRecord.removeResultsLocked(sourceRecord, resultWho, requestCode);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (sourceRecord.launchedFromUid == callingUid) &#123;</div><div class="line">            callingPackage = sourceRecord.launchedFromPackage;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//前面已经将intent改成显式intent，所以getComponent()！=null</span></div><div class="line">    <span class="keyword">if</span> (err == ActivityManager.START_SUCCESS &amp;&amp; intent.getComponent() == <span class="keyword">null</span>) &#123;</div><div class="line">        err = ActivityManager.START_INTENT_NOT_RESOLVED;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//从前面也知道aInfo对应了FallbackHome,aInfo！=null</span></div><div class="line">    <span class="keyword">if</span> (err == ActivityManager.START_SUCCESS &amp;&amp; aInfo == <span class="keyword">null</span>) &#123;</div><div class="line">        err = ActivityManager.START_CLASS_NOT_FOUND;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//前面分析了sourceRecord=null，所以不走这里</span></div><div class="line">    <span class="keyword">if</span> (err == ActivityManager.START_SUCCESS &amp;&amp; sourceRecord != <span class="keyword">null</span></div><div class="line">            &amp;&amp; sourceRecord.task.voiceSession != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> ((launchFlags &amp; FLAG_ACTIVITY_NEW_TASK) == <span class="number">0</span></div><div class="line">                &amp;&amp; sourceRecord.info.applicationInfo.uid != aInfo.applicationInfo.uid) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                intent.addCategory(Intent.CATEGORY_VOICE);</div><div class="line">                <span class="keyword">if</span> (!AppGlobals.getPackageManager().activitySupportsIntent(</div><div class="line">                        intent.getComponent(), intent, resolvedType)) &#123;</div><div class="line">                    Slog.w(TAG,</div><div class="line">                            <span class="string">"Activity being started in current voice task does not support voice: "</span></div><div class="line">                                    + intent);</div><div class="line">                    err = ActivityManager.START_NOT_VOICE_COMPATIBLE;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">                Slog.w(TAG, <span class="string">"Failure checking voice capabilities"</span>, e);</div><div class="line">                err = ActivityManager.START_NOT_VOICE_COMPATIBLE;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//传入参数voiceSession==null，所以不走这里</span></div><div class="line">    <span class="keyword">if</span> (err == ActivityManager.START_SUCCESS &amp;&amp; voiceSession != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (!AppGlobals.getPackageManager().activitySupportsIntent(intent.getComponent(),</div><div class="line">                    intent, resolvedType)) &#123;</div><div class="line">                Slog.w(TAG,</div><div class="line">                        <span class="string">"Activity being started in new voice task does not support: "</span></div><div class="line">                                + intent);</div><div class="line">                err = ActivityManager.START_NOT_VOICE_COMPATIBLE;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">            Slog.w(TAG, <span class="string">"Failure checking voice capabilities"</span>, e);</div><div class="line">            err = ActivityManager.START_NOT_VOICE_COMPATIBLE;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//前面已经分析了resultRecord==null，所以resultStack==null</span></div><div class="line">    <span class="keyword">final</span> ActivityStack resultStack = resultRecord == <span class="keyword">null</span> ? <span class="keyword">null</span> : resultRecord.task.stack;</div><div class="line"></div><div class="line">    <span class="comment">// 判断以上流程是否出错过，如果出错就发RESULT_CANCELED的Result给相应的Activity</span></div><div class="line">    <span class="comment">// 过程中没有出错，不走这里</span></div><div class="line">    <span class="keyword">if</span> (err != START_SUCCESS) &#123;</div><div class="line">        <span class="keyword">if</span> (resultRecord != <span class="keyword">null</span>) &#123;</div><div class="line">            resultStack.sendActivityResultLocked(</div><div class="line">                    -<span class="number">1</span>, resultRecord, resultWho, requestCode, RESULT_CANCELED, <span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">        ActivityOptions.abort(options);</div><div class="line">        <span class="keyword">return</span> err;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 检查是否有启动对应Activity的权限</span></div><div class="line">    <span class="comment">// 由于传入的callingUid==0，表示Root的uid（感觉用System的Uid比较合理），检查权限必然通过</span></div><div class="line">    <span class="keyword">boolean</span> abort = !mSupervisor.checkStartAnyActivityPermission(intent, aInfo, resultWho,</div><div class="line">            requestCode, callingPid, callingUid, callingPackage, ignoreTargetSecurity, callerApp,</div><div class="line">            resultRecord, resultStack, options);</div><div class="line">    <span class="comment">//IntentFirewall是一个Intent的防火墙，能够拦截特定的Intent</span></div><div class="line">    <span class="comment">//拦截列表一般在/data/system/ifw/*.xml,默认为空</span></div><div class="line">    <span class="comment">//所以 abort==false</span></div><div class="line">    abort |= !mService.mIntentFirewall.checkStartActivity(intent, callingUid,</div><div class="line">            callingPid, resolvedType, aInfo.applicationInfo);</div><div class="line">    <span class="comment">//mController是一个binder，IActivityController类型，一般用于monkey监视控制AMS对Activity的操作</span></div><div class="line">    <span class="keyword">if</span> (mService.mController != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Intent watchIntent = intent.cloneFilter();</div><div class="line">            abort |= !mService.mController.activityStarting(watchIntent,</div><div class="line">                    aInfo.applicationInfo.packageName);</div><div class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</div><div class="line">            mService.mController = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//拦截应用，比如多用户模型下，非管理员可能不能打开短信电话</span></div><div class="line">    mInterceptor.setStates(userId, realCallingPid, realCallingUid, startFlags, callingPackage);</div><div class="line">    mInterceptor.intercept(intent, rInfo, aInfo, resolvedType, inTask, callingPid, callingUid,</div><div class="line">            options);</div><div class="line">    intent = mInterceptor.mIntent;</div><div class="line">    rInfo = mInterceptor.mRInfo;</div><div class="line">    aInfo = mInterceptor.mAInfo;</div><div class="line">    resolvedType = mInterceptor.mResolvedType;</div><div class="line">    inTask = mInterceptor.mInTask;</div><div class="line">    callingPid = mInterceptor.mCallingPid;</div><div class="line">    callingUid = mInterceptor.mCallingUid;</div><div class="line">    options = mInterceptor.mActivityOptions;</div><div class="line">    <span class="comment">//abort==true时候给resultActivity发送RESULT_CANCELED</span></div><div class="line">    <span class="comment">//前面分析abort==false，不走这</span></div><div class="line">    <span class="keyword">if</span> (abort) &#123;</div><div class="line">        <span class="keyword">if</span> (resultRecord != <span class="keyword">null</span>) &#123;</div><div class="line">            resultStack.sendActivityResultLocked(-<span class="number">1</span>, resultRecord, resultWho, requestCode,</div><div class="line">                    RESULT_CANCELED, <span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">        ActivityOptions.abort(options);</div><div class="line">        <span class="keyword">return</span> START_SUCCESS;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//Build.PERMISSIONS_REVIEW_REQUIRED是否要检测API&lt;23的应用的动态权限，Build.PERMISSIONS_REVIEW_REQUIRED是false，所以不走这</span></div><div class="line">    <span class="keyword">if</span> (Build.PERMISSIONS_REVIEW_REQUIRED &amp;&amp; aInfo != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (mService.getPackageManagerInternalLocked().isPermissionsReviewRequired(</div><div class="line">                aInfo.packageName, userId)) &#123;</div><div class="line">            IIntentSender target = mService.getIntentSenderLocked(</div><div class="line">                    ActivityManager.INTENT_SENDER_ACTIVITY, callingPackage,</div><div class="line">                    callingUid, userId, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>, <span class="keyword">new</span> Intent[]&#123;intent&#125;,</div><div class="line">                    <span class="keyword">new</span> String[]&#123;resolvedType&#125;, PendingIntent.FLAG_CANCEL_CURRENT</div><div class="line">                            | PendingIntent.FLAG_ONE_SHOT, <span class="keyword">null</span>);</div><div class="line"></div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> flags = intent.getFlags();</div><div class="line">            Intent newIntent = <span class="keyword">new</span> Intent(Intent.ACTION_REVIEW_PERMISSIONS);</div><div class="line">            newIntent.setFlags(flags</div><div class="line">                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);</div><div class="line">            newIntent.putExtra(Intent.EXTRA_PACKAGE_NAME, aInfo.packageName);</div><div class="line">            newIntent.putExtra(Intent.EXTRA_INTENT, <span class="keyword">new</span> IntentSender(target));</div><div class="line">            <span class="keyword">if</span> (resultRecord != <span class="keyword">null</span>) &#123;</div><div class="line">                newIntent.putExtra(Intent.EXTRA_RESULT_NEEDED, <span class="keyword">true</span>);</div><div class="line">            &#125;</div><div class="line">            intent = newIntent;</div><div class="line"></div><div class="line">            resolvedType = <span class="keyword">null</span>;</div><div class="line">            callingUid = realCallingUid;</div><div class="line">            callingPid = realCallingPid;</div><div class="line"></div><div class="line">            rInfo = mSupervisor.resolveIntent(intent, resolvedType, userId);</div><div class="line">            aInfo = mSupervisor.resolveActivity(intent, rInfo, startFlags,</div><div class="line">                    <span class="keyword">null</span> <span class="comment">/*profilerInfo*/</span>);</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (DEBUG_PERMISSIONS_REVIEW) &#123;</div><div class="line">                Slog.i(TAG, <span class="string">"START u"</span> + userId + <span class="string">" &#123;"</span> + intent.toShortString(<span class="keyword">true</span>, <span class="keyword">true</span>,</div><div class="line">                        <span class="keyword">true</span>, <span class="keyword">false</span>) + <span class="string">"&#125; from uid "</span> + callingUid + <span class="string">" on display "</span></div><div class="line">                        + (container == <span class="keyword">null</span> ? (mSupervisor.mFocusedStack == <span class="keyword">null</span> ?</div><div class="line">                        Display.DEFAULT_DISPLAY : mSupervisor.mFocusedStack.mDisplayId) :</div><div class="line">                        (container.mActivityDisplay == <span class="keyword">null</span> ? Display.DEFAULT_DISPLAY :</div><div class="line">                                container.mActivityDisplay.mDisplayId)));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//传参rInfo==false,不走这</span></div><div class="line">    <span class="keyword">if</span> (rInfo != <span class="keyword">null</span> &amp;&amp; rInfo.ephemeralResolveInfo != <span class="keyword">null</span>) &#123;</div><div class="line">        intent = buildEphemeralInstallerIntent(intent, ephemeralIntent,</div><div class="line">                rInfo.ephemeralResolveInfo.getPackageName(), callingPackage, resolvedType,</div><div class="line">                userId);</div><div class="line">        resolvedType = <span class="keyword">null</span>;</div><div class="line">        callingUid = realCallingUid;</div><div class="line">        callingPid = realCallingPid;</div><div class="line"></div><div class="line">        aInfo = mSupervisor.resolveActivity(intent, rInfo, startFlags, <span class="keyword">null</span> <span class="comment">/*profilerInfo*/</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//构建ActivityRecored</span></div><div class="line">    ActivityRecord r = <span class="keyword">new</span> ActivityRecord(mService, callerApp, callingUid, callingPackage,</div><div class="line">            intent, resolvedType, aInfo, mService.mConfiguration, resultRecord, resultWho,</div><div class="line">            requestCode, componentSpecified, voiceSession != <span class="keyword">null</span>, mSupervisor, container,</div><div class="line">            options, sourceRecord);</div><div class="line">    <span class="keyword">if</span> (outActivity != <span class="keyword">null</span>) &#123;</div><div class="line">        outActivity[<span class="number">0</span>] = r;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//前面分析了sourceRecord==null，不走这</span></div><div class="line">    <span class="keyword">if</span> (r.appTimeTracker == <span class="keyword">null</span> &amp;&amp; sourceRecord != <span class="keyword">null</span>) &#123;</div><div class="line">        r.appTimeTracker = sourceRecord.appTimeTracker;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//mSupervisor.mFocusedStack在AMS设置WindowManager就设置成HomeStack</span></div><div class="line">    <span class="keyword">final</span> ActivityStack stack = mSupervisor.mFocusedStack;</div><div class="line"></div><div class="line">    <span class="comment">//这块主要处理AppSwitch，当按下home键后，会回到home界面。</span></div><div class="line">    <span class="comment">//从按下Home键之后5秒内，后台启动Activity（非用户主动）会进入队列中等待启动，5秒结束了才会启动</span></div><div class="line">    <span class="keyword">if</span> (voiceSession == <span class="keyword">null</span> &amp;&amp; (stack.mResumedActivity == <span class="keyword">null</span></div><div class="line">            || stack.mResumedActivity.info.applicationInfo.uid != callingUid)) &#123;</div><div class="line">        <span class="keyword">if</span> (!mService.checkAppSwitchAllowedLocked(callingPid, callingUid,</div><div class="line">                realCallingPid, realCallingUid, <span class="string">"Activity start"</span>)) &#123;</div><div class="line">            PendingActivityLaunch pal =  <span class="keyword">new</span> PendingActivityLaunch(r,</div><div class="line">                    sourceRecord, startFlags, stack, callerApp);</div><div class="line">            mPendingActivityLaunches.add(pal);</div><div class="line">            ActivityOptions.abort(options);</div><div class="line">            <span class="keyword">return</span> ActivityManager.START_SWITCHES_CANCELED;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (mService.mDidAppSwitch) &#123;</div><div class="line">        mService.mAppSwitchesAllowedTime = <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        mService.mDidAppSwitch = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    doPendingActivityLaunchesLocked(<span class="keyword">false</span>);</div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        mService.mWindowManager.deferSurfaceLayout();</div><div class="line">        err = startActivityUnchecked(r, sourceRecord, voiceSession, voiceInteractor, startFlags,</div><div class="line">                <span class="keyword">true</span>, options, inTask);<span class="comment">//&lt;==</span></div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        mService.mWindowManager.continueSurfaceLayout();</div><div class="line">    &#125;</div><div class="line">    postStartActivityUncheckedProcessing(r, err, stack.mStackId, mSourceRecord, mTargetStack);</div><div class="line">    <span class="keyword">return</span> err;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Activity/" rel="tag"># Activity</a>
+          
+            <a href="/tags/AMS/" rel="tag"># AMS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/25/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/虚拟机-JVM/" rel="prev" title="虚拟机-JVM">
+                虚拟机-JVM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTczMy82Mjk5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/AndroidO.png"
+               alt="谢天铎" />
+          <p class="site-author-name" itemprop="name">谢天铎</p>
+           
+              <p class="site-description motion-element" itemprop="description">An Android Developer</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xietianduo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DirectBoot之FallbackHome"><span class="nav-number">1.</span> <span class="nav-text">DirectBoot之FallbackHome</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DirectBoot"><span class="nav-number">1.1.</span> <span class="nav-text">DirectBoot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FallbackHome"><span class="nav-number">1.2.</span> <span class="nav-text">FallbackHome</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键类"><span class="nav-number">2.</span> <span class="nav-text">关键类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FallbackHome之启动"><span class="nav-number">3.</span> <span class="nav-text">FallbackHome之启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AMS-systemReady"><span class="nav-number">4.</span> <span class="nav-text">AMS.systemReady</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AMS-startHomeActivityLocked"><span class="nav-number">5.</span> <span class="nav-text">AMS.startHomeActivityLocked</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ActivityStarter-startHomeActivityLocked"><span class="nav-number">5.1.</span> <span class="nav-text">ActivityStarter.startHomeActivityLocked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ActivityStarter-startActivityLocked"><span class="nav-number">5.2.</span> <span class="nav-text">ActivityStarter.startActivityLocked</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢天铎</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
