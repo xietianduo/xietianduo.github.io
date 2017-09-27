@@ -75,7 +75,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Activity,AMS," />
+  <meta name="keywords" content="源码,Android,AM," />
 
 
 
@@ -91,18 +91,18 @@
 
 
 
-<meta name="description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
-<meta name="keywords" content="Activity,AMS">
+<meta name="description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析">
+<meta name="keywords" content="源码,Android,AM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Launcher的启动">
 <meta property="og:url" content="http://xietianduo.github.io/2017/07/25/Activity启动/index.html">
 <meta property="og:site_name" content="谢天铎">
-<meta property="og:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
+<meta property="og:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-17T09:50:28.138Z">
+<meta property="og:updated_time" content="2017-09-27T07:34:00.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Launcher的启动">
-<meta name="twitter:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析    DirectBoot之FallbackHomeDirectBootAPI24开始就加了Direc">
+<meta name="twitter:description" content="尊重原创，禁止任何形式的转载与抄袭 本文选用API25分析    关键词 简写     ActivityManagerService AMS   ActivityStackSupervisor ASS   PackageManagerService PMS   &amp;lt;== 表示将进入方法内分析">
 
 
 
@@ -361,8 +361,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AMS剖析/" itemprop="url" rel="index">
-                    <span itemprop="name">AMS剖析</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -423,12 +423,13 @@
 </tr>
 </tbody>
 </table>
+<a id="more"></a>
 <h1 id="DirectBoot之FallbackHome"><a href="#DirectBoot之FallbackHome" class="headerlink" title="DirectBoot之FallbackHome"></a>DirectBoot之FallbackHome</h1><h2 id="DirectBoot"><a href="#DirectBoot" class="headerlink" title="DirectBoot"></a>DirectBoot</h2><p>API24开始就加了DirectBoot的特性，开机到解锁前的时间，系统会进入DirectBoot模式。不过正常情况下没有开启，需要在开发选项或者使用adb开启。<br>开启了DirectBoot之后有如下变化：</p>
 <ol>
 <li><strong>存储变化：</strong>系统会为应用提供两个不同的存储空间，一个是凭证加密空间，需要解锁后才能使用，另外一个是设备加密空间，不需要解锁，在启动后就能直接使用。</li>
 <li><strong>应用启动限制：</strong>只有标记了android:directBootAware=”true” 的组件才能在DirectBoot模式下启动，其他组件都无法启动。</li>
 </ol>
-<h2 id="FallbackHome"><a href="#FallbackHome" class="headerlink" title="FallbackHome"></a>FallbackHome</h2><p>由于系统应用Launcher本身并不支持DirectBoot，但是Android N前Launcher是在system_process启动时刻就立刻启动，这不符合上面提到的DirectBoot应用启动限制，所以，所以就在AndroidN及以上的系统应用Setttings中添加一个简易的Launcher应用叫FallbackHome，FallbackHome支持DirectBoot，不管是否开启了DirectBoot,AMS首先会在系统启动时刻启动FallbackHome，FallbackHome会自动判断如果不是处在DirectBoot模式下，是则会自动销毁自己，AMS会重启Home栈，真正的Launcher才启动。所以AndroidN后，开机会先启动FallbackHome，再启动真正的Launcher。<br><a id="more"></a></p>
+<h2 id="FallbackHome"><a href="#FallbackHome" class="headerlink" title="FallbackHome"></a>FallbackHome</h2><p>由于系统应用Launcher本身并不支持DirectBoot，但是Android N前Launcher是在system_process启动时刻就立刻启动，这不符合上面提到的DirectBoot应用启动限制，所以，所以就在AndroidN及以上的系统应用Setttings中添加一个简易的Launcher应用叫FallbackHome，FallbackHome支持DirectBoot，不管是否开启了DirectBoot,AMS首先会在系统启动时刻启动FallbackHome，FallbackHome会自动判断如果不是处在DirectBoot模式下，是则会自动销毁自己，AMS会重启Home栈，真正的Launcher才启动。所以AndroidN后，开机会先启动FallbackHome，再启动真正的Launcher。<br><!-- more --></p>
 <h1 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h1><table>
 <thead>
 <tr>
@@ -496,9 +497,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Activity/" rel="tag"># Activity</a>
+            <a href="/tags/源码/" rel="tag"># 源码</a>
           
-            <a href="/tags/AMS/" rel="tag"># AMS</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/AM/" rel="tag"># AM</a>
           
         </div>
       
@@ -511,18 +514,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/25/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/17/虚拟机-JVM/" rel="prev" title="虚拟机-JVM">
-                虚拟机-JVM <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/23/FFmpeg编译/" rel="prev" title="FFmpeg编译">
+                FFmpeg编译 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -598,7 +597,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -620,7 +619,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

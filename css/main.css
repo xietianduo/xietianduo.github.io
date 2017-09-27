@@ -565,16 +565,16 @@ pre code {
   border: none;
 }
 pre .deletion {
-  background: #fdd;
+  background: #008000;
 }
 pre .addition {
-  background: #dfd;
+  background: #800000;
 }
 pre .meta {
   color: #8959a8;
 }
 pre .comment {
-  color: #8e908c;
+  color: #f00;
 }
 pre .variable,
 pre .attribute,
@@ -1677,7 +1677,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff38ad;
+  background: #3844e0;
 }
 .links-of-blogroll {
   font-size: 13px;

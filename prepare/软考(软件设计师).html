@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="尊重原创，禁止任何形式的转载与抄袭 4.软件工程基础知识软件工程是指应用计算机科学,数学及管理科学等原理,以工程化的原则和方法来解决软件问题的工程,其目的是提高软件生产率,提高软件质量,降低软件成本.">
+<meta name="keywords" content="杂记">
+<meta property="og:type" content="website">
+<meta property="og:title" content="软考(软件设计师)">
+<meta property="og:url" content="http://xietianduo.github.io/prepare/软考(软件设计师).html">
+<meta property="og:site_name" content="谢天铎">
+<meta property="og:description" content="尊重原创，禁止任何形式的转载与抄袭 4.软件工程基础知识软件工程是指应用计算机科学,数学及管理科学等原理,以工程化的原则和方法来解决软件问题的工程,其目的是提高软件生产率,提高软件质量,降低软件成本.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xietianduo.github.io/images/201032.png">
+<meta property="og:image" content="http://xietianduo.github.io/images/201135.png">
+<meta property="og:updated_time" content="2017-09-21T03:32:09.174Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="软考(软件设计师)">
+<meta name="twitter:description" content="尊重原创，禁止任何形式的转载与抄袭 4.软件工程基础知识软件工程是指应用计算机科学,数学及管理科学等原理,以工程化的原则和方法来解决软件问题的工程,其目的是提高软件生产率,提高软件质量,降低软件成本.">
+<meta name="twitter:image" content="http://xietianduo.github.io/images/201032.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: 'TianDuo'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xietianduo.github.io/prepare/软考(软件设计师).html"/>
+
+
+
+
+
+  <title>软考(软件设计师) | 谢天铎</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ed4c24291ef0929abc893cfd9d1ce21a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">谢天铎</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just Have A Try</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            博客首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            文章分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有文章
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">软考(软件设计师)</h1>
+
+
+
+</header>
+
+    
+    
+      <p><strong>尊重原创，禁止任何形式的转载与抄袭</strong></p>
+<h1 id="4-软件工程基础知识"><a href="#4-软件工程基础知识" class="headerlink" title="4.软件工程基础知识"></a>4.软件工程基础知识</h1><p>软件工程是指应用计算机科学,数学及管理科学等原理,以工程化的原则和方法来解决软件问题的工程,其目的是提高软件生产率,提高软件质量,降低软件成本.<br><a id="more"></a></p>
+<h2 id="软件工程基本原理"><a href="#软件工程基本原理" class="headerlink" title="软件工程基本原理"></a>软件工程基本原理</h2><ol>
+<li>用分阶段的生命周期计划严格管理</li>
+<li>坚持进行阶段评审</li>
+<li>实现严格的产品控制(把关需求变更带来的一系列修改)</li>
+<li>采用现代化编程技术</li>
+<li>结果能审查</li>
+<li>开发人员少而精</li>
+<li>不断改进软件工程</li>
+</ol>
+<h2 id="软件生命周期"><a href="#软件生命周期" class="headerlink" title="软件生命周期"></a>软件生命周期</h2><ol>
+<li>可行性分析与项目开发计划</li>
+<li>需求分析</li>
+<li>概要设计</li>
+<li>详细设计</li>
+<li>编码</li>
+<li>测试</li>
+<li>维护</li>
+</ol>
+<h2 id="软件过程模型"><a href="#软件过程模型" class="headerlink" title="软件过程模型"></a>软件过程模型</h2><h3 id="瀑布模型"><a href="#瀑布模型" class="headerlink" title="瀑布模型"></a>瀑布模型</h3><ol>
+<li>阶段间具有顺序与依赖: 前个阶段完成才能进入下一个阶段,前个阶段输出的文档就是下个阶段的输入文档,只有前个阶段正确了才能进入下个阶段</li>
+<li>推迟实现: 设计后才编码,避免返工</li>
+<li>质量保证:每一阶段都有文档,对每一阶段的文档都会评审,保证质量</li>
+</ol>
+<p>缺点:需求是变化的,书面规格的详细需求现实不存在导致这一模型在第一阶段需求分析就出现错误.要到最后才能看到开发成果.</p>
+<h3 id="增量模型"><a href="#增量模型" class="headerlink" title="增量模型"></a>增量模型</h3><p>增量模型是瀑布模型的变体,每一个增量均发布一个可操作性的产品. 没有对用户变更进行规划,造成增量不稳定导致重新开发</p>
+<h3 id="演化模型"><a href="#演化模型" class="headerlink" title="演化模型"></a>演化模型</h3><h4 id="原形模型"><a href="#原形模型" class="headerlink" title="原形模型"></a>原形模型</h4><p>快速设计一个软件的原形给用户评价与修改,获取用户的真正需求,根据需求修改或者重做原形,一旦需求确定就开始做文档做正式版软件</p>
+<h4 id="螺旋模型"><a href="#螺旋模型" class="headerlink" title="螺旋模型"></a>螺旋模型</h4><p>螺旋模型就是原形模型各个阶段前加上风险评估过程,风险过大终止项目.适用于内部大型项目</p>
+<h3 id="喷泉模型"><a href="#喷泉模型" class="headerlink" title="喷泉模型"></a>喷泉模型</h3><p>喷泉模型是一种以用户需求为动力,对象作为驱动的模型,适用于面向对象的开方法,每个阶段没有明显界限,可以同步经行.</p>
+<h3 id="基于构建的开发模型"><a href="#基于构建的开发模型" class="headerlink" title="基于构建的开发模型"></a>基于构建的开发模型</h3><p>基于构建的开发是指利用预先包装的构建来构造应用系统</p>
+<h3 id="形式化方法模型-Formal-Methods-Model"><a href="#形式化方法模型-Formal-Methods-Model" class="headerlink" title="形式化方法模型(Formal Methods Model)"></a>形式化方法模型(Formal Methods Model)</h3><p>采用数学模型推到不合理</p>
+<h2 id="McCabe"><a href="#McCabe" class="headerlink" title="McCabe"></a>McCabe</h2><p>环路复杂度用来定量度量程序的逻辑复杂度。以McCabe方法来表示。<br>在程序控制流程图中，节点是程序中代码的最小单元，边代表节点间的程序流。一个有e条边和n个节点的流程图F，可以用下述3种方法中的任何一种来计算环形复杂度。<br>（1）流图中的区域数等于环形复杂度。<br>（2）流图G的环形复杂度V(G)=E-N+2，其中，E是流图中边的条数，N是结点数。(N节点如果是自环不带分支,环不算边)<br>（3）流图G的环形复杂度V(G)=P+1，其中，P是流图中判定结点的数目。</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><h3 id="2010年下半年试题15"><a href="#2010年下半年试题15" class="headerlink" title="(2010年下半年试题15)"></a>(2010年下半年试题15)</h3><p>某项目组拟开发一个大规模系统，且具备了相关领域及类似规模系统的开发经验。下列过程模型中，<strong>__</strong>最适合开发此项目。<br>    A．原型模型    B．瀑布模型    C．V模型    D．螺旋模型<br> B<br>本题考查软件开发生命周期模型的基本知识。<br>    常见的软件生存周期模型有瀑布模型、演化模型、螺旋模型、喷泉模型等。瀑布模型是将软件生存周期各个活动规定为依线性顺序连接的若干阶段的模型，适合于软件需求很明确的软件项目。V模型是瀑布模型的一种演变模型，将测试和分析与设计关联进行，加强分析与设计的验证。原型模型是一种演化模型，通过快速构建可运行的原型系统，然后根据运行过程中获取的用户反馈进行改进。演化模型特别适用于对软件需求缺乏准确认识的情况。螺旋模型将瀑布模型和演化模型结合起来，加入了两种模型均忽略的风险分析。<br>    本题中项目组具备了所开发系统的相关领域及类似规模系统的开发经验，即需求明确，瀑布模型最适合开发此项目。</p>
+<h3 id="2010年下半年试题18"><a href="#2010年下半年试题18" class="headerlink" title="(2010年下半年试题18)"></a>(2010年下半年试题18)</h3><p>敏捷开发方法XP是一种轻量级、高效、低风险、柔性、可预测的、科学的软件开发方法，其特性包含在12个最佳实践中。系统的设计要能够尽可能早交付，属于<strong>__</strong>最佳实践。<br>     A．隐喻    B．重构    C．小型发布    D．持续集成<br>  C<br>本题考查软件开发过程管理的基本知识。<br>    敏捷开发方法XP是一种轻量级、高效、低风险、柔性、可预测的、科学的软件开发方法，其特性包含在12个最佳实践中。<br>    (1)计划游戏：快速制定计划、随着细节的不断变化而完善；<br>    (2)小型发布：系统的设计要能够尽可能早地交付；<br>    (3)隐喻：找到合适的比喻传达信息；<br>    (4)简单设计：只处理当前的需求使设计保持简单；<br>    (5)测试先行：先写测试代码再编写程序；<br>    (6)重构：重新审视需求和设计，重新明确地描述它们，以符合新的和现有的需求；<br>    (7)结队编程；<br>    (8)集体代码所有制；<br>    (9)持续集成：可以按日甚至按小时为客户提供可运行的版本；<br>    (10)每周工作40个小时；<br>    (11)现场客户；<br>    (12)编码标准。</p>
+<h3 id="2010年下半年试题30"><a href="#2010年下半年试题30" class="headerlink" title="(2010年下半年试题30)"></a>(2010年下半年试题30)</h3><p>以下关于过程改进的叙述中，错误的是<strong>__</strong>。<br>    A．过程能力成熟度模型基于这样的理念：改进过程将改进产品，尤其是软件产品<br>    B．软件过程改进框架包括评估、计划、改进和监控4个部分<br>    C．软件过程改进不是一次性的，需要反复进行<br>    D．在评估后要把发现的问题转化为软件过程改进计划<br> B<br>软件成熟度模型CMM是对软件组织进化阶段的描述，该模型在解决软件过程存在问题方面取得了很大的成功，因此在软件界产生了巨大影响，促使软件界重视并认真对待过程改进工作。过程能力成熟度模型基于这样的理念：改进过程将改进产品，尤其是软件产品。软件组织为提高自身的过程能力，把不够成熟的过程提升到较成熟的过程涉及4个方面，这4个方面构成了软件过程改进的框架，即过程改进基础设施、过程改进线路图、软件过程评估方法和软件过程改进计划。在进行评估后需要把发现的问题转化为软件过程改进计划。而过程改进通常不可能是一次性的，需要反复进行。每一次改进要经历4个步骤：评估、计划、改进和监控。</p>
+<h3 id="2010年下半年试题31"><a href="#2010年下半年试题31" class="headerlink" title="(2010年下半年试题31)"></a>(2010年下半年试题31)</h3><p> 软件复杂性度量的参数不包括<strong>__</strong>。<br>     A．软件的规模    B．开发小组的规模<br>     C．软件的难度    D．软件的结构<br>  B<br>软件复杂性度量是软件度量的一个重要分支。软件复杂性度量的参数有很多，主要包括：(1)规模，即指令数或者源程序行数；(2)难度，通常由程序中出现的操作数所决定的量来表示；(3)结构，通常用与程序结构有关的度量来表示；(4)智能度，即算法的难易程度。</p>
+<h3 id="2010年下半年试题32"><a href="#2010年下半年试题32" class="headerlink" title="(2010年下半年试题32)"></a>(2010年下半年试题32)</h3><p>根据McCabe度量法，以下程序图的复杂性度量值为<strong>__</strong>。<br><img src="/images/201032.png" alt=""><br>     A．4    B．5    C．6    D．7</p>
+<p>  A<br>软件复杂性度量是软件度量的一个重要分支，而其主要表现在程序的复杂性。其中，McCabe度量法是一种基于程序控制流的复杂性度量方法，该方法认为程序的复杂性很大程度上取决于控制的复杂性。首先根据程序画出程序图，然后基于图论用图的环路数来度量程序复杂性，即V(G)=m-n+2p，其中m，n和p分别表示图G中孤的个数、顶点的个数和强连通分量数。根据上述公式可得，上图的复杂性为9-7+2=4。</p>
+<h3 id="2010年下半年试题33"><a href="#2010年下半年试题33" class="headerlink" title="(2010年下半年试题33)"></a>(2010年下半年试题33)</h3><p>软件系统的可维护性评价指标不包括<strong>__</strong>。<br>     A．可理解性    B．可测试性    C．可扩展性    D．可修改性<br>  C<br>  软件的可维护性是指维护人员理解、改正、改动和改进这个软件的难易程度，是软件开发阶段各个时期的关键目标。软件系统的可维护性评价指标包括可理解性、可测试性、可修改性、可靠性、可移植性、可使用性和效率。</p>
+<h3 id="2010年下半年试题34"><a href="#2010年下半年试题34" class="headerlink" title="(2010年下半年试题34)"></a>(2010年下半年试题34)</h3><p>以下关于软件系统文档的叙述中，错误的是<strong>__</strong>。<br>     A．软件系统文档既包括有一定格式要求的规范文档，又包括系统建设过程中的各种来往文件、会议纪要、会计单据等资料形成的不规范文档<br>     B．软件系统文档可以提高软件开发的可见度<br>     C．软件系统文档不能提高软件开发效率<br>     D．软件系统文档便于用户理解软件的功能、性能等各项指标<br>  C<br>软件系统文档是系统建设过程的“痕迹”，是系统维护人员的指南，是开发人员与用户交流的工具。软件系统文档不仅包括应用软件开发过程中产生的文档，还包括硬件采购和网络设计中形成的文档；不仅包括有一定格式要求的规范文档，还包括系统建设过程中的各种来往文件、会议纪要、会计单据等资料形成的不规范文档。软件系统文档可以提高软件开发的可见度，提高软件开发效率，且便于用户理解软件的功能、性能等各项指标。</p>
+<h3 id="2010年下半年试题35"><a href="#2010年下半年试题35" class="headerlink" title="(2010年下半年试题35)"></a>(2010年下半年试题35)</h3><p>以下关于软件测试的叙述中，正确的是<strong>__</strong>。<br>     A．软件测试不仅能表明软件中存在错误，也能说明软件中不存在错误<br>     B．软件测试活动应从编码阶段开始<br>     C．一个成功的测试能发现至今未发现的错误<br>     D．在一个被测程序段中，若已发现的错误越多，则残存的错误数越少<br>  C<br>  软件测试是软件开发过程中一个独立而且非常重要的阶段，它是为了发现错误而执行程序的过程。因此一个成功的测试应该能发现至今未发现的错误。而且需要特别指出的是软件测试不能表明软件中不存在错误，它只能说明软件中存在错误。另外，由于问题的复杂性、软件本身的复杂性和抽象性、软件开发各个阶段工作的多样性、参加开发各种人员之间的配合关系等因素，使得开发的每个环节都可能产生错误，因此软件测试应该贯穿到软件开发的各个阶段中，且需要尽早地和不断地进行。经验表明，测试中存在一种集群现象，即在被测程序段中，若发现的错误数目越多，则残存的错误数目也较多。</p>
+<h3 id="2010年下半年试题36"><a href="#2010年下半年试题36" class="headerlink" title="(2010年下半年试题36)"></a>(2010年下半年试题36)</h3><p>不属于黑盒测试技术的是<strong>__</strong>。<br>     A．错误猜测    B．逻辑覆盖    C．边界值分析  D．等价类划分<br>  B<br>  黑盒测试也称为功能测试，在完全不考虑软件的内部结构和特性的情况下来测试软件的外部特性。常用的黑盒测试技术包括等价类划分、边界值分析、错误猜测和因果图的报告。白盒测试也称为结构测试，根据程序的内部结构和逻辑来设计测试用例，对程序的执行路径和过程进行测试，检查是否满足设计的需要。常用的白盒测试技术包括逻辑覆盖和基本路径测试。</p>
+<h3 id="2011年上半年试题16"><a href="#2011年上半年试题16" class="headerlink" title="(2011年上半年试题16)"></a>(2011年上半年试题16)</h3><p>模块A直接访问模块B的内部数据，则模块A和模块B的耦合类型为<strong>__</strong>。<br>    A．数据耦合  B．标记耦合    C．公共耦合    D．内容耦合<br> D<br>[解析] 本题考查软件的分析与设计方法。<br>    模块独立性是创建良好设计的一个重要原则，一般采用模块间的耦合和模块的内聚两个准则来进行度量。耦合是模块之间的相对独立性的度量，模块之间的连接越紧密，联系越多，耦合性就越高，而其模块独立性就越弱。一般来说，模块之间的耦合有7种类型，根据耦合性从低到高为非直接耦合、数据耦合、标记耦合、控制耦合、外部耦合、公共耦合和内容耦合。如果一个模块访问另一个模块时，彼此之间是通过数据参数(不是控制参数、公共数据结构或外部变量)来交换输入、输出信息的，则称这种耦合为数据耦合；如果一组模块通过数据结构本身传递，则称这种耦合为标记耦合；若一组模块都访问同一个公共数据环境，则它们之间的耦合就称为公共耦合；若一个模块直接访问另一个模块的内部数据、一个模块不通过正常入口转到另一个模块内部、两个模块有一部分程序代码重叠或者一个模块有多个入口，上述几个情形之一发生则说明两个模块之间就发生了内容耦合。</p>
+<h3 id="2011年上半年试题29"><a href="#2011年上半年试题29" class="headerlink" title="(2011年上半年试题29)"></a>(2011年上半年试题29)</h3><p>为了有效地捕获系统需求，应采用<strong>__</strong>。<br>   A．瀑布模型    B．V模型    C．原型模型    D．螺旋模型<br>C<br>[解析] 本题考查软件过程模型。<br>    软件过程是软件生命周期中的一系列相关活动，即用于开发和维护软件及相关产品的一系列活动。软件过程模型可以帮助开发团队理解开发过程，形成对开发中的活动、资源和约束的共同理解，可以根据具体情况对一个过程进行裁翦等。瀑布模型从一种非常高层的角度描述了软件开发过程中进行的活动，并且提出了要求开发人员经过的事件序列。该模型适用于项目丌始时需求已确定的情况。V模型是瀑布模型的变种，它说明测试活动是如何与分析和设计相联系的。原型模型允许开发人员快速地构造整个系统或系统的一部分以理解或澄清问题。原型的用途是获知用户的真正需求，因此原型模型可以有效地引发系统需求。螺旋模型把开发活动和风险管理结合起来，以将风险减到最小并控制风险。</p>
+<h3 id="2011年上半年试题30"><a href="#2011年上半年试题30" class="headerlink" title="(2011年上半年试题30)"></a>(2011年上半年试题30)</h3><p>关于过程改进，以下叙述中不正确的是<strong>__</strong>。<br>    A．软件质量依赖于软件开发过程的质量，其中个人因素占主导作用<br>    B．要使过程改进有效，需要制定过程改进目标<br>    C．要使过程改进有效，需要进行培训<br>    D．CMMI成熟度模型是一种过程改进模型，仅支持阶段性过程改进而不支持连续性过程改进<br> D<br>[解析] 本题考查软件过程改进。<br>    软件开发过程极大地影响所生成的产品质量，因此改进过程将改进软件产品的质量。这也是进行过程改进的前提和理念。软件质量依赖于软件开发过程的质量，其中，人的因素是主导的，开发技术、过程质量、成本时间和进度也是影响因素。另外，要使得过程改进有效，需要制定过程改进的目标，还需要对开发人员进行培训。CMMI是SEI将已有的几个CMM模型结合在一起，使之构成“集成模型”，即成熟度模型，该模型支持阶段性过程改进和连续性过程改进。</p>
+<h3 id="2011年上半年试题31"><a href="#2011年上半年试题31" class="headerlink" title="(2011年上半年试题31)"></a>(2011年上半年试题31)</h3><p>软件产品的可靠性并不取决于<strong>__</strong>。<br>   A．潜在错误的数量    B．潜在错误的位置<br>   C．软件产品的使用方式    D．软件产品的开发方式<br>D<br>[解析] 本题考查软件质量管理。<br>    软件可靠性指的是一个系统对于给定的时间间隔内、在给定条件下无失效运作的概率。根据定义，软件可靠性与软件的潜在错误的数量、位置有关，与软件产品的使用方式有关，而软件产品的开发方式不决定软件产品的可靠性。</p>
+<h3 id="2011年上半年试题32"><a href="#2011年上半年试题32" class="headerlink" title="(2011年上半年试题32)"></a>(2011年上半年试题32)</h3><p>软件<strong>__</strong>是指一个系统在给定时间间隔内和给定条件下无失效运行的概率。<br>    A．可靠性    B．可用性    C．可维护性    D．可伸缩性<br> A<br>[解析] 本题考查软件质量管理。<br>    软件可靠性指的是一个系统对于给定的时间间隔内、在给定条件下无失效运作的概率。软件可用性使之在给定的时间点上，一个软件系统能够按照规格说明正确运行的概率。软件可维护性是在给定的使用条件下，在规定的时间间隔内，使用规定的过程和资源完成维护活动的概率。</p>
+<h3 id="2011年上半年试题33"><a href="#2011年上半年试题33" class="headerlink" title="(2011年上半年试题33)"></a>(2011年上半年试题33)</h3><p>高质量的文档所应具有的特性中，不包括<strong>__</strong>。<br>    A．针对性，文档编制应考虑读者对象群<br>    B．精确性，文档的行文应该十分确切，不能出现多义性的描述<br>    C．完整性，任何文档都应当是完整的、独立的，应该自成体系<br>    D．无重复性，同一软件系统的几个文档之间应该没有相同的内容，若确实存在相同内容，则可以用“见<strong>文档</strong>节”的方式引用<br> D<br>[解析] 本题考查文档与软件维护。<br>    文档是指某种数据媒体和其中所记录的数据。在软件开发过程中，有大量的信息要记录和使用，因此文档具有重要的作用，如可以提高软件开发过程的能见度、提高开发效率、作为开发人员在一定阶段的工作成果和结束标志、记录开发过程中的有关信息、提高对软件运行维护和培训的有关信息、便于用户了解软件功能和性能等各项指标。<br>    高质量的文档应该体现在几个方面：针对性，文档编制应考虑读者。按不同的类型、不同层次的读者，决定怎样适应他们的需要；精确性，文档的行文应该十分确切，不能出现多义性的描述。同一项目几个文档的内容应该是协调一致，没有矛盾的；清晰性，文档编写应力求简明，如有可能，配以适当的图表，以增强其清晰性；完整性，任何文档都应当是完整的、独立的，应该自成体系；灵活性，各个不同软件项目，其规模和复杂程度有着许多实际差别，不能一律看待；可追溯性，由于各开发阶段编制的文档与各个阶段完成的工作有密切的关系，前后两个阶段生成的文档，随着开发工作的逐步延伸，具有一定的继承关系，在一个项目各开发阶段之间提供的文档必定存在着可追溯的关系。</p>
+<h3 id="2011年上半年试题34"><a href="#2011年上半年试题34" class="headerlink" title="(2011年上半年试题34)"></a>(2011年上半年试题34)</h3><p>在软件维护阶段，为软件的运行增加监控设施属于<strong>__</strong>维护。<br>    A．改正性    B．适应性    C．完善性    D．预防性<br> C<br>[解析] 本题考查软件维护技术。<br>    在软件开发完成交付用户使用后，就进入软件运行/维护阶段。软件维护活动根据其内容可以分为4种类型：改正性维护，为了识别和纠正软件错误、改正软件性能上的缺陷、排除实施中的误使用，应进行的诊断和改正错误的过程；适应性维护，由于信息技术飞速发展，软件运行．的外部环境或数据环境可能会发生变化，为了使软件适应这种变化，而修改软件的过程；完善性维护，在软件使用过程中，用户往往会对软件提出新的功能与性能要求，为了满足这些要求，需要修改或再开发软件，以扩充软件功能、增强软件性能、改进加工效率、提高软件的可维护性而进行的维护活动；预防性维护是为了提高软件的可维护性和可靠性等，为以后进一步改进软件打下良好基础而进行的维护工作。</p>
+<h3 id="2011年上半年试题35"><a href="#2011年上半年试题35" class="headerlink" title="(2011年上半年试题35)"></a>(2011年上半年试题35)</h3><p>下图所示的逻辑流，最少需要<strong>__</strong>个测试用例可实现语句覆盖。<br>    <img src="/images/201135.png" alt=""><br>    A．1    B．2    C．3    D．5<br> A<br>[解析] 本题考查软件测试技术。<br>    语句覆盖是一种白盒测试技术，指的是设计若干测试用例，运行被测程序，使得每一个可执行语句至少执行一次。题中的逻辑流的输入是一个数组a，只要存在某个a[i]＞a[j]的情况，则该测试用例下可以覆盖所有的可执行语句，因此至少需要1个测试用例即可。</p>
+<h3 id="2011年上半年试题36"><a href="#2011年上半年试题36" class="headerlink" title="(2011年上半年试题36)"></a>(2011年上半年试题36)</h3><p>在改正当前故障的同时可能会引入新的故障，这时需要进行<strong>__</strong>。<br>    A．功能测试    B．性能测试    C．回归测试    D．验收测试<br> C<br>[解析] 本题考查软件测试技术。<br>    功能测试检查软件是否能实现需求中指定的那些功能。性能测试是测试软件的安全性、精确性、速度和可靠性。回归测试用于识别在改正当前故障的同时可能会引入新的故障。验收测试是客户对系统进行测试以验证软件系统是否符合他们对需求的理解。</p>
+
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTczMy82Mjk5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/AndroidO.png"
+               alt="谢天铎" />
+          <p class="site-author-name" itemprop="name">谢天铎</p>
+           
+              <p class="site-description motion-element" itemprop="description">An Android Developer</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xietianduo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-软件工程基础知识"><span class="nav-number">1.</span> <span class="nav-text">4.软件工程基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#软件工程基本原理"><span class="nav-number">1.1.</span> <span class="nav-text">软件工程基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件生命周期"><span class="nav-number">1.2.</span> <span class="nav-text">软件生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件过程模型"><span class="nav-number">1.3.</span> <span class="nav-text">软件过程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#瀑布模型"><span class="nav-number">1.3.1.</span> <span class="nav-text">瀑布模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增量模型"><span class="nav-number">1.3.2.</span> <span class="nav-text">增量模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#演化模型"><span class="nav-number">1.3.3.</span> <span class="nav-text">演化模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原形模型"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">原形模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#螺旋模型"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">螺旋模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#喷泉模型"><span class="nav-number">1.3.4.</span> <span class="nav-text">喷泉模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于构建的开发模型"><span class="nav-number">1.3.5.</span> <span class="nav-text">基于构建的开发模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#形式化方法模型-Formal-Methods-Model"><span class="nav-number">1.3.6.</span> <span class="nav-text">形式化方法模型(Formal Methods Model)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#McCabe"><span class="nav-number">1.4.</span> <span class="nav-text">McCabe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.5.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题15"><span class="nav-number">1.5.1.</span> <span class="nav-text">(2010年下半年试题15)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题18"><span class="nav-number">1.5.2.</span> <span class="nav-text">(2010年下半年试题18)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题30"><span class="nav-number">1.5.3.</span> <span class="nav-text">(2010年下半年试题30)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题31"><span class="nav-number">1.5.4.</span> <span class="nav-text">(2010年下半年试题31)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题32"><span class="nav-number">1.5.5.</span> <span class="nav-text">(2010年下半年试题32)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题33"><span class="nav-number">1.5.6.</span> <span class="nav-text">(2010年下半年试题33)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题34"><span class="nav-number">1.5.7.</span> <span class="nav-text">(2010年下半年试题34)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题35"><span class="nav-number">1.5.8.</span> <span class="nav-text">(2010年下半年试题35)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2010年下半年试题36"><span class="nav-number">1.5.9.</span> <span class="nav-text">(2010年下半年试题36)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题16"><span class="nav-number">1.5.10.</span> <span class="nav-text">(2011年上半年试题16)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题29"><span class="nav-number">1.5.11.</span> <span class="nav-text">(2011年上半年试题29)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题30"><span class="nav-number">1.5.12.</span> <span class="nav-text">(2011年上半年试题30)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题31"><span class="nav-number">1.5.13.</span> <span class="nav-text">(2011年上半年试题31)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题32"><span class="nav-number">1.5.14.</span> <span class="nav-text">(2011年上半年试题32)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题33"><span class="nav-number">1.5.15.</span> <span class="nav-text">(2011年上半年试题33)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题34"><span class="nav-number">1.5.16.</span> <span class="nav-text">(2011年上半年试题34)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题35"><span class="nav-number">1.5.17.</span> <span class="nav-text">(2011年上半年试题35)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2011年上半年试题36"><span class="nav-number">1.5.18.</span> <span class="nav-text">(2011年上半年试题36)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢天铎</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
